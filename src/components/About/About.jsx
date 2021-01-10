@@ -7,7 +7,7 @@ function About(props) {
   return (
     <div className='about'>
       <div className='about__photo'>
-        <img src={photoImg} alt='' className='about__photo-img' />
+        <img src={photoImg} alt='Фото автора' className='about__photo-img' />
       </div>
       <div className='about__info'>
         <h2 className='about__title'>Об авторе</h2>

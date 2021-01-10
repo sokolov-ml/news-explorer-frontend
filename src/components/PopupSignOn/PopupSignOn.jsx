@@ -40,12 +40,12 @@ export default function PopupSignOn(props) {
   };
   return (
     <PopupWithForm {...props} title='Вход' onSubmit={handleSubmit}>
-      <label htmlFor='input-user-email' className='popup__field'>
+      <label htmlFor='input-signon-user-email' className='popup__field'>
         Email
         <input
           type='email'
           name='email'
-          id='input-user-email'
+          id='input-signon-user-email'
           className='popup__input popup__input_field_email'
           required
           minLength='2'
@@ -54,16 +54,16 @@ export default function PopupSignOn(props) {
           onChange={handleInputChange}
           placeholder='Введите почту'
         />
-        <span className='popup__input-error' id='input-user-email-error'>
+        <span className='popup__input-error' id='input-signon-user-email-error'>
           {inputValues.email.validationMessage}
         </span>
       </label>
-      <label htmlFor='input-user-password' className='popup__field'>
+      <label htmlFor='input-signon-user-password' className='popup__field'>
         Пароль
         <input
           type='password'
           name='password'
-          id='input-user-password'
+          id='input-signon-user-password'
           className='popup__input popup__input_field_password'
           required
           minLength='2'
@@ -72,16 +72,16 @@ export default function PopupSignOn(props) {
           onChange={handleInputChange}
           placeholder='Введите пароль'
         />
-        <span className='popup__input-error' id='input-user-password-error'>
+        <span className='popup__input-error' id='input-signon-user-password-error'>
           {inputValues.password.validationMessage}
         </span>
       </label>
-      <label htmlFor='input-user-password' className='popup__field'>
+      <label htmlFor='input-signon-user-name' className='popup__field'>
         Имя
         <input
           type='text'
           name='name'
-          id='input-user-name'
+          id='input-signon-user-name'
           className='popup__input popup__input_field_name'
           required
           minLength='2'
@@ -90,7 +90,7 @@ export default function PopupSignOn(props) {
           onChange={handleInputChange}
           placeholder='Введите пароль'
         />
-        <span className='popup__input-error' id='input-user-name-error'>
+        <span className='popup__input-error' id='input-signon-user-name-error'>
           {inputValues.name.validationMessage}
         </span>
       </label>

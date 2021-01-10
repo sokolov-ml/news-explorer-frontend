@@ -17,12 +17,13 @@ function MainHeader({ onHeaderButtonClick, onSearch }) {
         <p className='main__description'>
           Находите самые свежие статьи на любую тему и сохраняйте в своём личном кабинете
         </p>
-        <form action='' className='main__form' onSubmit={handleSubmit}>
+        <form className='main__form' onSubmit={handleSubmit}>
           <input
             className='main__input'
             type='text'
             defaultValue='Природа'
             placeholder='Введите тему новости'
+            required
           />
           <button className='main__button'>Искать</button>
         </form>

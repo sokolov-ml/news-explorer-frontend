@@ -15,7 +15,7 @@ function NewsCard({ card }) {
   }
 
   return (
-    <div className='news-card'>
+    <li className='news-card'>
       <button className='news-card__bookmark'>
         <svg
           className='news-card__bookmark-icon'
@@ -32,14 +32,14 @@ function NewsCard({ card }) {
           />
         </svg>
       </button>
-      <img src={card.urlToImage} alt='' className='news-card__photo' />
+      <img src={card.urlToImage} alt={card.title} className='news-card__photo' />
       <div className='news-card__content'>
         <p className='news-card__date'>{formatDate(card.publishedAt)}</p>
         <h3 className='news-card__title'>{card.title}</h3>
         <p className='news-card__text'>{card.description}</p>
         <p className='news-card__source'>{card.source.name}</p>
       </div>
-    </div>
+    </li>
   );
 }
 
