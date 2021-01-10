@@ -1,0 +1,36 @@
+.news-card-list {
+  background-color: #f5f6f7;
+  padding: 80px 104px;
+
+  display: none;
+}
+
+.news-card-list_visible {
+  display: block;
+}
+
+.news-card-list__title {
+  margin: 0 0 64px;
+
+  font-family: 'Roboto Slab', serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 40px;
+  line-height: 46px;
+  text-align: left;
+
+  /* identical to box height, or 115% */
+
+  /* main/primary */
+  color: #1a1b22;
+}
+
+.news-card-list__items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 400px);
+  gap: 16px;
+}

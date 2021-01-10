@@ -1,0 +1,109 @@
+.main__header {
+  background-image: url('../../images/georgia-de-lotz--UsJoNxLaNo-unsplash.png');
+  height: 576px;
+  width: 100%;
+}
+
+.main__content {
+  color: white;
+  width: 608px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.main__title {
+  font-family: 'Roboto Slab', serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 60px;
+  line-height: 64px;
+  text-align: left;
+
+  margin: 80px 0 32px;
+}
+
+.main__description {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+
+  text-align: left;
+  margin: 0;
+}
+
+.main__form {
+  display: flex;
+  width: 100%;
+
+  margin: 64px 0 80px;
+}
+
+.main__input {
+  width: 100%;
+  height: 64px;
+  border-radius: 100px;
+
+  padding: 0 24px;
+
+  border: 1px solid #d1d2d6;
+  box-sizing: border-box;
+  backdrop-filter: blur(8px);
+
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #1a1b22;
+}
+
+.main__input::placeholder {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #b6bcbf;
+}
+
+.main__button {
+  --buttonWidth: 168px;
+
+  height: 64px;
+  width: var(--buttonWidth);
+
+  margin-left: calc(var(--buttonWidth) * -1);
+  z-index: 1;
+
+  background: #2f71e5;
+  box-shadow: 0px 5px 15px rgba(14, 26, 57, 0.2);
+  border-radius: 100px;
+
+  border-style: none;
+
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.main__button:hover {
+  background-color: #347eff;
+}
+
+.main__button:active {
+  background-color: #2a65cc;
+}
+
+.main__button:focus {
+  outline: none;
+}

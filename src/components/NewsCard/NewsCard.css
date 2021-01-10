@@ -1,0 +1,122 @@
+.news-card {
+  width: 400px;
+  min-height: 576px;
+  border-radius: 16px;
+  background-color: #fff;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.news-card__photo {
+  width: 100%;
+  height: 272px;
+  object-fit: cover;
+}
+
+.news-card__bookmark {
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 8px;
+
+  border: none;
+
+  position: absolute;
+  top: 24px;
+  right: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.news-card__bookmark:focus {
+  outline: none;
+}
+
+.news-card__bookmark:hover > .news-card__bookmark-icon > path {
+  stroke: #1a1b22;
+}
+
+.news-card__bookmark_saved > .news-card__bookmark-icon > path {
+  stroke: #2f71e5;
+  fill: #2f71e5;
+}
+
+.news-card__content {
+  padding: 20px 24px 24px;
+  /* display: grid;
+  grid-template-areas: 'date' 'title' 'text' 'source'; */
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* justify-content: space-between; */
+}
+
+.news-card__date {
+  margin: 0;
+
+  font-family: 'Source Sans Pro', serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  color: #b6bcbf;
+  text-align: left;
+
+  /* identical to box height, or 133% */
+}
+.news-card__title {
+  margin: 12px 0 16px;
+
+  font-family: 'Roboto Slab', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 30px;
+
+  /* or 115% */
+  color: #1a1b22;
+
+  text-align: left;
+}
+.news-card__text {
+  margin: 0;
+
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+
+  /* or 137% */
+
+  /* main/primary */
+  color: #1a1b22;
+
+  text-align: justify;
+  flex-grow: 1;
+}
+.news-card__source {
+  margin: 18px 0 0;
+
+  font-family: 'Roboto Slab', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+
+  /* identical to box height, or 125% */
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+
+  /* simulator/gray/text */
+  color: #b6bcbf;
+  text-align: left;
+}
