@@ -1,5 +1,6 @@
 .news-card {
-  width: 400px;
+  width: 100%;
+  min-width: 224px;
   min-height: 576px;
   border-radius: 16px;
   background-color: #fff;

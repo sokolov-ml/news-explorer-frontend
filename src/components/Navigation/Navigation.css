@@ -7,7 +7,7 @@
 }
 
 .navigation__item {
-  margin-left: 40px;
+  margin-left: 1vw;
 }
 
 .navigation__link {
@@ -22,4 +22,16 @@
   /* main/primary */
   text-decoration: none;
   color: #1a1b22;
+}
+
+@media screen and (max-width: 400px) {
+  .navigation {
+    flex-flow: row wrap-reverse;
+    padding: 0;
+    justify-content: flex-end;
+  }
+
+  .navigation__item {
+    margin: 0 10px;
+  }
 }

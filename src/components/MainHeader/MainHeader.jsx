@@ -10,22 +10,22 @@ function MainHeader({ onHeaderButtonClick, onSearch }) {
   };
 
   return (
-    <div className='main__header'>
+    <div className='main-header'>
       <Header color='white' onHeaderButtonClick={onHeaderButtonClick} />
-      <div className='main__content'>
-        <h1 className='main__title'>Что творится в мире?</h1>
-        <p className='main__description'>
+      <div className='main-header__content'>
+        <h1 className='main-header__title'>Что творится в мире?</h1>
+        <p className='main-header__description'>
           Находите самые свежие статьи на любую тему и сохраняйте в своём личном кабинете
         </p>
-        <form className='main__form' onSubmit={handleSubmit}>
+        <form className='main-header__form' onSubmit={handleSubmit}>
           <input
-            className='main__input'
+            className='main-header__input'
             type='text'
             defaultValue='Природа'
             placeholder='Введите тему новости'
             required
           />
-          <button className='main__button'>Искать</button>
+          <button className='main-header__button'>Искать</button>
         </form>
       </div>
     </div>

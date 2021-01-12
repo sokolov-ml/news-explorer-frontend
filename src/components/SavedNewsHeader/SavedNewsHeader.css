@@ -57,3 +57,19 @@
   font-size: 18px;
   line-height: 24px;
 }
+
+@media screen and (max-width: 768px) {
+  .savednews__greeting {
+    font-size: 30px;
+    line-height: 34px;
+  }
+}
+
+@media screen and (max-width: 510px) {
+}
+
+@media screen and (max-width: 400px) {
+  .savednews__caption {
+    padding: 0 16px;
+  }
+}
