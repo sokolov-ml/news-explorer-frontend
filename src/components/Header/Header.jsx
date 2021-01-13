@@ -14,9 +14,23 @@ function Header({ color, onHeaderButtonClick }) {
   return (
     <div className={`header ${color && `header_color_${color}`}`}>
       <div className='header__content'>
-        <div className='header__logo' onClick={() => history.push('/')}>
-          NewsExplorer
+        <div className='header__top'>
+          <div className='header__logo' onClick={() => history.push('/')}>
+            NewsExplorer
+          </div>
+          <svg
+            className='header__burger'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <rect x='4' y='8' width='16' height='2' fill='#1A1B22' />
+            <rect x='4' y='14' width='16' height='2' fill='#1A1B22' />
+          </svg>
         </div>
+
         <div className='header__bar'>
           <ul className='menu'>
             <li className='menu__item'>

@@ -11,7 +11,7 @@ function SavedNewsHeader({ onHeaderButtonClick }) {
   return (
     <>
       <div className='savednews__header'>
-        <Header onHeaderButtonClick={onHeaderButtonClick}></Header>
+        <Header onHeaderButtonClick={onHeaderButtonClick} color='black'></Header>
         <div className='savednews__caption'>
           <h2 className='savednews__title'>Сохранённые статьи</h2>
           <p className='savednews__greeting'>

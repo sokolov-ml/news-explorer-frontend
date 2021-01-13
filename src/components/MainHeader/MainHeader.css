@@ -140,3 +140,9 @@
     width: 100%;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .main-header__content {
+    padding-top: 86px;
+  }
+}
