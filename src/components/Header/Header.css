@@ -21,6 +21,7 @@
   padding: 0 40px;
   min-height: 80px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .header_color_white {
