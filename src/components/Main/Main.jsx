@@ -9,14 +9,29 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 
 import './Main.css';
 
-function Main({ onHeaderButtonClick, onSearch, isSearchResultsShown }) {
+function Main({
+  onHeaderButtonClick,
+  onSearch,
+  isSearchResultsShown,
+  currentSearch,
+  onSearchMore,
+}) {
   return (
     <div className='main'>
       <MainHeader onHeaderButtonClick={onHeaderButtonClick} onSearch={onSearch}></MainHeader>
 
       <GraySection>
-        <NewsCardList isShown={isSearchResultsShown}>
-          <h2 className='news-card-list__title'>Результаты поиска</h2>
+        <NewsCardList
+          isShown={isSearchResultsShown}
+          newsCards={currentSearch.articles}
+          onSearchMore={onSearchMore}
+          searchMoreCounter={currentSearch.totalResults - currentSearch.articles.length}
+        >
+          <h2 className='news-card-list__title'>
+            {currentSearch.totalResults > 0
+              ? `Результаты поиска (${currentSearch.totalResults})`
+              : 'Ничего не найдено'}
+          </h2>
         </NewsCardList>
       </GraySection>
 

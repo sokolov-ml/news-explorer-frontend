@@ -9,25 +9,104 @@ import SavedNews from '../SavedNews/SavedNews';
 import PopupSignIn from '../PopupSignIn/PopupSignIn';
 import PopupSignOn from '../PopupSignOn/PopupSignOn';
 
+import mainApi from '../utils/MainApi';
+import newsApi from '../utils/NewsApi';
+
 import './App.css';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({ loggedOn: false, user: {} });
+
+  const [newsCards, setNewsCards] = React.useState([]);
+  const [currentSearch, setCurrentSearch] = React.useState({
+    keyWord: '',
+    nextPage: 0,
+    articles: [],
+  });
+  const [searchResponse, setSearchResponse] = React.useState({});
 
   const [isPopupSignInOpened, setIsPopupSignInOpened] = React.useState(false);
   const [isPopupSignOnOpened, setIsPopupSignOnOpened] = React.useState(false);
 
   const [isSearchResultsShown, setIsSearchResultsShown] = React.useState(false);
 
+  let history = useHistory();
+
+  React.useEffect(() => {
+    if (localStorage.token) {
+      checkLocalToken();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    console.log(currentSearch);
+  }, [currentSearch]);
+
+  function checkLocalToken() {
+    console.log(localStorage.token);
+    mainApi
+      .checkCurrentToken()
+      .then((data) => {
+        console.log(data);
+        if (data) {
+          console.log(data);
+          setCurrentUser({ loggedOn: true, user: data });
+          return data;
+        }
+      })
+      .catch((err) => {
+        console.error('something wrong');
+      });
+  }
+
   function closeAllPopups() {
     setIsPopupSignInOpened(false);
     setIsPopupSignOnOpened(false);
   }
 
+  function handleLogin(obj, func) {
+    return mainApi
+      .signin(obj.email, obj.password)
+      .then(() => {
+        checkLocalToken();
+        closeAllPopups();
+      })
+      .catch(() => {
+        console.error('can`t login');
+      });
+  }
+
+  function handleLogoff() {
+    localStorage.removeItem('token');
+    setCurrentUser({ loggedOn: false, user: {} });
+    history.push('/');
+  }
+
+  function handleRegister(obj, func) {
+    return mainApi
+      .signup(obj.name, obj.email, obj.password)
+      .then((data) => {
+        // setIsUserLoggedIn(true);
+        // history.push('/signin');
+        // setInfoTooltipStatus(true);
+        // setIsInfoTooltipPopupOpen(true);
+        closeAllPopups();
+        setIsPopupSignInOpened(true);
+      })
+      .catch(() => {
+        console.error('can`t register');
+        // setInfoTooltipStatus(false);
+        // setIsInfoTooltipPopupOpen(true);
+      });
+    // .finally(() => {
+    //   func(false);
+    // });
+  }
+
   const onHeaderButtonClick = () => {
     console.log('click');
     if (currentUser.loggedOn) {
-      setCurrentUser({ loggedOn: false, user: {} });
+      handleLogoff();
     } else {
       openSignInForm(true);
     }
@@ -43,14 +122,33 @@ function App() {
     setIsPopupSignInOpened(true);
   };
 
-  const setUserLoggedOn = () => {
-    setCurrentUser({ loggedOn: true, user: { name: 'Грета' } });
-    closeAllPopups();
-  };
+  function onSearch(keyWord, pageNumber, articles) {
+    return newsApi.search(keyWord, pageNumber).then((response) => {
+      console.log(response);
 
-  const onSearch = () => {
-    setIsSearchResultsShown(true);
-  };
+      const result = {
+        keyWord,
+        nextPage: pageNumber + 1,
+        totalResults: response.totalResults,
+        articles: [...articles, ...response.articles],
+      };
+
+      setCurrentSearch(result);
+      // localStorage.setItem('search', result);
+      setIsSearchResultsShown(true);
+    });
+  }
+
+  function onSearchNew(keyWord) {
+    setCurrentSearch({ keyWord, nextPage: 1, articles: [] });
+    return onSearch(keyWord, 1, []);
+  }
+
+  function onSearchMore() {
+    onSearch(currentSearch.keyWord, currentSearch.nextPage, currentSearch.articles);
+  }
+
+  const saveResults = () => {};
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -60,7 +158,9 @@ function App() {
             <Main
               onHeaderButtonClick={onHeaderButtonClick}
               isSearchResultsShown={isSearchResultsShown}
-              onSearch={onSearch}
+              onSearch={onSearchNew}
+              onSearchMore={onSearchMore}
+              currentSearch={currentSearch}
             ></Main>
           </Route>
           <Route path='/saved-news'>
@@ -71,13 +171,13 @@ function App() {
           isOpen={isPopupSignInOpened}
           onClose={closeAllPopups}
           onLink={openSignOnForm}
-          onSubmit={setUserLoggedOn}
+          onSubmit={handleLogin}
         />
         <PopupSignOn
           isOpen={isPopupSignOnOpened}
           onClose={closeAllPopups}
           onLink={openSignInForm}
-          onSubmit={setUserLoggedOn}
+          onSubmit={handleRegister}
         />
       </div>
     </CurrentUserContext.Provider>

@@ -41,10 +41,28 @@
 
   display: grid;
   grid-template-columns: repeat(3, minmax(224px, 1fr));
+  grid-auto-flow: dense;
   gap: 16px;
 
   width: 100%;
   justify-content: center;
+}
+
+.news-card-list__button {
+  margin: 64px 0 0;
+  background: #ffffff;
+  border-radius: 80px;
+  border-style: none;
+
+  padding: 20px 84px;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+
+  color: #1a1b22;
 }
 
 @media screen and (max-width: 1024px) {

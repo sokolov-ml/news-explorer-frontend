@@ -34,10 +34,19 @@ export default function PopupSignIn(props) {
     console.log(inputValues);
   };
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    props.onSubmit();
-  };
+
+    setIsLoading(true);
+    props
+      .onSubmit({
+        email: inputValues.email.value,
+        password: inputValues.password.value,
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
 
   return (
     <PopupWithForm {...props} title='Вход' onSubmit={handleSubmit}>
