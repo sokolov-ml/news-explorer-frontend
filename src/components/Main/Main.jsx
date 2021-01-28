@@ -25,7 +25,9 @@ function Main({
           isShown={isSearchResultsShown}
           newsCards={currentSearch.articles}
           onSearchMore={onSearchMore}
-          searchMoreCounter={currentSearch.totalResults - currentSearch.articles.length}
+          searchMoreCounter={
+            currentSearch.articles && currentSearch.totalResults - currentSearch.articles.length
+          }
         >
           <h2 className='news-card-list__title'>
             {currentSearch.totalResults > 0

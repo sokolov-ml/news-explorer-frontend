@@ -36,10 +36,15 @@ function App() {
     if (localStorage.token) {
       checkLocalToken();
     }
+
+    if (localStorage.currentSearch) {
+      setCurrentSearch(JSON.parse(localStorage.getItem('currentSearch')));
+    }
   }, []);
 
   React.useEffect(() => {
-    console.log(currentSearch);
+    localStorage.setItem('currentSearch', JSON.stringify(currentSearch));
+    setIsSearchResultsShown(true);
   }, [currentSearch]);
 
   function checkLocalToken() {
@@ -134,21 +139,17 @@ function App() {
       };
 
       setCurrentSearch(result);
-      // localStorage.setItem('search', result);
-      setIsSearchResultsShown(true);
     });
   }
 
   function onSearchNew(keyWord) {
-    setCurrentSearch({ keyWord, nextPage: 1, articles: [] });
+    // setCurrentSearch({ keyWord, nextPage: 1, articles: [] });
     return onSearch(keyWord, 1, []);
   }
 
   function onSearchMore() {
-    onSearch(currentSearch.keyWord, currentSearch.nextPage, currentSearch.articles);
+    return onSearch(currentSearch.keyWord, currentSearch.nextPage, currentSearch.articles);
   }
-
-  const saveResults = () => {};
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
