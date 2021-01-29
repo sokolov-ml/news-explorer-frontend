@@ -28,6 +28,7 @@ function MainHeader({ onHeaderButtonClick, onSearch }) {
           Находите самые свежие статьи на любую тему и сохраняйте в своём личном кабинете
         </p>
         <form className='main-header__form' onSubmit={handleSubmit}>
+          {/* <fieldset className='main-header__fieldset' disabled={isLoading}> */}
           <input
             className='main-header__input'
             type='text'
@@ -35,8 +36,13 @@ function MainHeader({ onHeaderButtonClick, onSearch }) {
             placeholder='Введите тему новости'
             onChange={handleInputChange}
             required
+            autoFocus
+            disabled={isLoading}
           />
-          <button className='main-header__button'>{isLoading ? 'Идёт поиск' : 'Искать'}</button>
+          <button className='main-header__button' disabled={isLoading}>
+            {isLoading ? 'Идёт поиск...' : 'Искать'}
+          </button>
+          {/* </fieldset> */}
         </form>
       </div>
     </div>

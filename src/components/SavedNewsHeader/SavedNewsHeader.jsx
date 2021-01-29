@@ -9,10 +9,10 @@ function SavedNewsHeader({ onHeaderButtonClick, savedArticles }) {
   const currentUser = React.useContext(CurrentUserContext);
 
   function getKeywords() {
-    let keywords = savedArticles
+    const keywords = savedArticles
       .map((a) => a.keyword)
       .reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), Object.create(null));
-    let sortable = [];
+    const sortable = [];
     for (let keyword in keywords) {
       sortable.push([keyword, keywords[keyword]]);
     }
@@ -43,21 +43,18 @@ function SavedNewsHeader({ onHeaderButtonClick, savedArticles }) {
   }
 
   return (
-    <>
-      <div className='savednews__header'>
-        <Header onHeaderButtonClick={onHeaderButtonClick} color='black'></Header>
-        <div className='savednews__caption'>
-          <h2 className='savednews__title'>Сохранённые статьи</h2>
-          <p className='savednews__greeting'>
-            {currentUser.user.name}, у вас {savedArticles && savedArticles.length} сохранённых
-            статей
-          </p>
-          <p className='savednews__keywords'>
-            По ключевым словам: <span className='savednews__keyword'>{getKeywords()}</span>
-          </p>
-        </div>
+    <div className='savednews__header'>
+      <Header onHeaderButtonClick={onHeaderButtonClick} color='black'></Header>
+      <div className='savednews__caption'>
+        <h2 className='savednews__title'>Сохранённые статьи</h2>
+        <p className='savednews__greeting'>
+          {currentUser.user.name}, у вас {savedArticles && savedArticles.length} сохранённых статей
+        </p>
+        <p className='savednews__keywords'>
+          По ключевым словам: <span className='savednews__keyword'>{getKeywords()}</span>
+        </p>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -6,10 +6,13 @@ import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 
 import NewsCardList from '../NewsCardList/NewsCardList';
 
-function SavedNews({ savedArticles, removeArticle }) {
+function SavedNews({ savedArticles, removeArticle, onHeaderButtonClick }) {
   return (
     <>
-      <SavedNewsHeader savedArticles={savedArticles}></SavedNewsHeader>
+      <SavedNewsHeader
+        savedArticles={savedArticles}
+        onHeaderButtonClick={onHeaderButtonClick}
+      ></SavedNewsHeader>
       <GraySection>
         <NewsCardList isShown={true} articles={savedArticles} removeArticle={removeArticle} />
       </GraySection>

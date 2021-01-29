@@ -8,12 +8,12 @@ class NewsApi {
   }
 
   _fetch(path, params) {
-    let searchParams = new URLSearchParams({
+    const searchParams = new URLSearchParams({
       apiKey: 'beaeceab4f2e4c7a91c632c1f9a59aa4',
       ...params,
     }).toString();
 
-    let url = `${this._url}${path}?${searchParams.toString()}`;
+    const url = `${this._url}${path}?${searchParams.toString()}`;
     console.log(url);
     return fetch(url, {
       headers: {
@@ -29,7 +29,7 @@ class NewsApi {
   }
 
   search(word, page = 1) {
-    let params = {
+    const params = {
       q: word,
       sortBy: 'popularity',
       pageSize: 3,

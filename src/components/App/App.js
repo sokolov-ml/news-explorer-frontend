@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, useLocation, Link, useHistory } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
@@ -13,6 +14,7 @@ import mainApi from '../utils/MainApi';
 import newsApi from '../utils/NewsApi';
 
 import './App.css';
+import PopupWithForm from '../PopupWithForm/PopupWithForm.jsx';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({ loggedOn: false, user: {} });
@@ -27,10 +29,26 @@ function App() {
 
   const [isPopupSignInOpened, setIsPopupSignInOpened] = React.useState(false);
   const [isPopupSignOnOpened, setIsPopupSignOnOpened] = React.useState(false);
+  const [isPopupRegisterDoneOpened, setIsPopupRegisterDoneOpened] = React.useState(false);
 
   const [isSearchResultsShown, setIsSearchResultsShown] = React.useState(false);
 
-  let history = useHistory();
+  const history = useHistory();
+
+  React.useEffect(() => {
+    return mainApi
+      .getArticles()
+      .then((response) => {
+        setSavedArticles(
+          response.map((article) => {
+            return { ...article, isSaved: true };
+          }),
+        );
+      })
+      .catch((err) => {
+        console.error('can`t get article');
+      });
+  }, []);
 
   React.useEffect(() => {
     if (localStorage.token) {
@@ -77,6 +95,7 @@ function App() {
   function closeAllPopups() {
     setIsPopupSignInOpened(false);
     setIsPopupSignOnOpened(false);
+    setIsPopupRegisterDoneOpened(false);
   }
 
   function handleLogin(obj, func) {
@@ -87,6 +106,7 @@ function App() {
         closeAllPopups();
       })
       .catch(() => {
+        alert('Ошибка связи с сервером, попробуйте ещё раз.');
         console.error('can`t login');
       });
   }
@@ -101,14 +121,10 @@ function App() {
     return mainApi
       .signup(obj.name, obj.email, obj.password)
       .then((data) => {
-        // setIsUserLoggedIn(true);
-        // history.push('/signin');
-        // setInfoTooltipStatus(true);
-        // setIsInfoTooltipPopupOpen(true);
-        closeAllPopups();
-        setIsPopupSignInOpened(true);
+        openRegisterDoneForm();
       })
       .catch(() => {
+        alert('Ошибка связи с сервером, попробуйте ещё раз.');
         console.error('can`t register');
         // setInfoTooltipStatus(false);
         // setIsInfoTooltipPopupOpen(true);
@@ -137,6 +153,11 @@ function App() {
     setIsPopupSignInOpened(true);
   };
 
+  const openRegisterDoneForm = () => {
+    closeAllPopups();
+    setIsPopupRegisterDoneOpened(true);
+  };
+
   const saveArticle = ({ keyword, title, text, date, source, link, image }) => {
     return mainApi
       .saveArticle({
@@ -161,66 +182,72 @@ function App() {
           ...savedArticles,
           { keyword, title, text, date, source, link, image, _id: response._id, isSaved: true },
         ]);
+      })
+      .catch((err) => {
+        alert('Ошибка связи с сервером, попробуйте ещё раз.');
+        console.error('can`t save article');
       });
   };
 
   const removeArticle = (articleId) => {
-    mainApi.removeArticle(articleId).then((response) => {
-      console.log(response);
-      //удалить из стейта массива сохранённых
-      setSavedArticles(savedArticles.filter((a) => a.link !== response.link));
+    mainApi
+      .removeArticle(articleId)
+      .then((response) => {
+        console.log(response);
+        //удалить из стейта массива сохранённых
+        setSavedArticles(savedArticles.filter((a) => a.link !== response.link));
 
-      //снять isSaved из стейта текущих карточек
-      setCurrentSearch({
-        ...currentSearch,
-        articles: currentSearch.articles.map((a) => {
-          if (a.link !== response.link) {
-            return a;
-          }
-          return { ...a, isSaved: false };
-        }),
+        //снять isSaved из стейта текущих карточек
+        setCurrentSearch({
+          ...currentSearch,
+          articles: currentSearch.articles.map((a) => {
+            if (a.link !== response.link) {
+              return a;
+            }
+            return { ...a, isSaved: false };
+          }),
+        });
+      })
+      .catch((err) => {
+        alert('Ошибка связи с сервером, попробуйте ещё раз.');
+        console.error('can`t remove article');
       });
-    });
   };
 
-  React.useEffect(() => {
-    return mainApi.getArticles().then((response) => {
-      setSavedArticles(
-        response.map((article) => {
-          return { ...article, isSaved: true };
-        }),
-      );
-    });
-  }, []);
-
   function onSearch(keyWord, pageNumber, articles) {
-    return newsApi.search(keyWord, pageNumber).then((response) => {
-      console.log(response);
+    return newsApi
+      .search(keyWord, pageNumber)
+      .then((response) => {
+        console.log(response);
 
-      let newArticles = response.articles.map((a) => {
-        return {
-          keyword: currentSearch.keyWord,
-          title: a.title,
-          text: a.description,
-          date: a.publishedAt,
-          source: a.source.name,
-          link: a.url,
-          image: a.urlToImage,
-          isSaved: false,
+        const newArticles = response.articles.map((a) => {
+          return {
+            keyword: keyWord,
+            title: a.title,
+            text: a.description,
+            date: a.publishedAt,
+            source: a.source.name,
+            link: a.url,
+            image: a.urlToImage,
+            isSaved: false,
+          };
+        });
+
+        console.log(newArticles);
+
+        const result = {
+          keyWord,
+          nextPage: pageNumber + 1,
+          totalResults: response.totalResults,
+          articles: [...articles, ...newArticles],
         };
+
+        setCurrentSearch(result);
+      })
+      .catch((err) => {
+        alert('Ошибка связи с сервером, попробуйте ещё раз.');
+        console.error('can`t search articles');
       });
-
-      console.log(newArticles);
-
-      const result = {
-        keyWord,
-        nextPage: pageNumber + 1,
-        totalResults: response.totalResults,
-        articles: [...articles, ...newArticles],
-      };
-
-      setCurrentSearch(result);
-    });
   }
 
   function onSearchNew(keyWord) {
@@ -248,13 +275,15 @@ function App() {
               openLoginPopup={openSignInForm}
             ></Main>
           </Route>
-          <Route path='/saved-news'>
-            <SavedNews
-              onHeaderButtonClick={onHeaderButtonClick}
-              savedArticles={savedArticles}
-              removeArticle={removeArticle}
-            ></SavedNews>
-          </Route>
+          <ProtectedRoute path='/saved-news' loggedIn={currentUser.loggedOn}>
+            <Route path='/saved-news'>
+              <SavedNews
+                onHeaderButtonClick={onHeaderButtonClick}
+                savedArticles={savedArticles}
+                removeArticle={removeArticle}
+              ></SavedNews>
+            </Route>
+          </ProtectedRoute>
         </Switch>
         <PopupSignIn
           isOpen={isPopupSignInOpened}
@@ -268,6 +297,16 @@ function App() {
           onLink={openSignInForm}
           onSubmit={handleRegister}
         />
+        <PopupWithForm
+          title={'Пользователь успешно зарегистрирован!'}
+          isOpen={isPopupRegisterDoneOpened}
+          onClose={closeAllPopups}
+          onSubmit={handleRegister}
+        >
+          <span className='popup__link' onClick={openSignInForm}>
+            Войти
+          </span>
+        </PopupWithForm>
       </div>
     </CurrentUserContext.Provider>
   );
