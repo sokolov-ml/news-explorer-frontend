@@ -123,6 +123,7 @@
 }
 
 .news-card__content {
+  text-decoration: none;
   padding: 20px 24px 24px;
   /* display: grid;
   grid-template-areas: 'date' 'title' 'text' 'source'; */
