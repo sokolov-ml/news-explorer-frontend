@@ -14,7 +14,7 @@ export default function PopupSignIn(props) {
   });
 
   const handleInputChange = (e) => {
-    console.log(inputValues);
+    // console.log(inputValues);
     setInputValues({
       ...inputValues,
       [e.target.name]: {
@@ -31,7 +31,7 @@ export default function PopupSignIn(props) {
           return false;
         }),
     });
-    console.log(inputValues);
+    // console.log(inputValues);
   };
 
   function handleSubmit(e) {

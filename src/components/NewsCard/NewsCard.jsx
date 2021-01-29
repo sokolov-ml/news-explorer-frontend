@@ -87,14 +87,13 @@ function NewsCard({ card, saveArticle, openLoginPopup, removeArticle }) {
         <p className='news-card__bookmark-hint'>Войдите, чтобы сохранять статьи</p>
       )}
       <img src={card.image} alt={card.title} className='news-card__photo' />
-      <div className='news-card__content'>
+      <a href={card.link} className='news-card__content' target='_blank' rel='noreferrer noopener'>
         <p className='news-card__date'>{formatDate(card.date)}</p>
         <h3 className='news-card__title'>{card.title.replace(/(.+) -.+$/, '$1')}</h3>
         <p className='news-card__text'>{card.text}</p>
         <p className='news-card__source'>{card.source}</p>
-      </div>
+      </a>
     </li>
   );
 }
-
 export default NewsCard;
