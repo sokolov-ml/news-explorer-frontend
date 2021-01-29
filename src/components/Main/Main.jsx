@@ -15,6 +15,9 @@ function Main({
   isSearchResultsShown,
   currentSearch,
   onSearchMore,
+  saveArticle,
+  removeArticle,
+  openLoginPopup,
 }) {
   return (
     <div className='main'>
@@ -23,11 +26,14 @@ function Main({
       <GraySection>
         <NewsCardList
           isShown={isSearchResultsShown}
-          newsCards={currentSearch.articles}
+          articles={currentSearch.articles}
           onSearchMore={onSearchMore}
           searchMoreCounter={
             currentSearch.articles && currentSearch.totalResults - currentSearch.articles.length
           }
+          saveArticle={saveArticle}
+          removeArticle={removeArticle}
+          openLoginPopup={openLoginPopup}
         >
           <h2 className='news-card-list__title'>
             {currentSearch.totalResults > 0

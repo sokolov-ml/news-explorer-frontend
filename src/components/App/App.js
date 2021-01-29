@@ -17,7 +17,7 @@ import './App.css';
 function App() {
   const [currentUser, setCurrentUser] = React.useState({ loggedOn: false, user: {} });
 
-  const [newsCards, setNewsCards] = React.useState([]);
+  const [savedArticles, setSavedArticles] = React.useState([]);
   const [currentSearch, setCurrentSearch] = React.useState({
     keyWord: '',
     nextPage: 0,
@@ -40,12 +40,22 @@ function App() {
     if (localStorage.currentSearch) {
       setCurrentSearch(JSON.parse(localStorage.getItem('currentSearch')));
     }
+
+    if (localStorage.savedArticles) {
+      setSavedArticles(JSON.parse(localStorage.getItem('savedArticles')));
+    }
   }, []);
 
   React.useEffect(() => {
+    console.log(currentSearch);
     localStorage.setItem('currentSearch', JSON.stringify(currentSearch));
     setIsSearchResultsShown(true);
   }, [currentSearch]);
+
+  React.useEffect(() => {
+    console.log(savedArticles);
+    localStorage.setItem('savedArticles', JSON.stringify(savedArticles));
+  }, [savedArticles]);
 
   function checkLocalToken() {
     console.log(localStorage.token);
@@ -127,15 +137,86 @@ function App() {
     setIsPopupSignInOpened(true);
   };
 
+  const saveArticle = ({ keyword, title, text, date, source, link, image }) => {
+    return mainApi
+      .saveArticle({
+        keyword,
+        title,
+        text,
+        date,
+        source,
+        link,
+        image,
+      })
+      .then((response) => {
+        const newArticles = currentSearch.articles.map((article) => {
+          if (article.link !== response.link) return article;
+
+          return { ...article, isSaved: true, _id: response._id };
+        });
+
+        console.log(newArticles);
+        setCurrentSearch({ ...currentSearch, articles: newArticles });
+        setSavedArticles([
+          ...savedArticles,
+          { keyword, title, text, date, source, link, image, _id: response._id, isSaved: true },
+        ]);
+      });
+  };
+
+  const removeArticle = (articleId) => {
+    mainApi.removeArticle(articleId).then((response) => {
+      console.log(response);
+      //удалить из стейта массива сохранённых
+      setSavedArticles(savedArticles.filter((a) => a.link !== response.link));
+
+      //снять isSaved из стейта текущих карточек
+      setCurrentSearch({
+        ...currentSearch,
+        articles: currentSearch.articles.map((a) => {
+          if (a.link !== response.link) {
+            return a;
+          }
+          return { ...a, isSaved: false };
+        }),
+      });
+    });
+  };
+
+  React.useEffect(() => {
+    return mainApi.getArticles().then((response) => {
+      setSavedArticles(
+        response.map((article) => {
+          return { ...article, isSaved: true };
+        }),
+      );
+    });
+  }, []);
+
   function onSearch(keyWord, pageNumber, articles) {
     return newsApi.search(keyWord, pageNumber).then((response) => {
       console.log(response);
+
+      let newArticles = response.articles.map((a) => {
+        return {
+          keyword: currentSearch.keyWord,
+          title: a.title,
+          text: a.description,
+          date: a.publishedAt,
+          source: a.source.name,
+          link: a.url,
+          image: a.urlToImage,
+          isSaved: false,
+        };
+      });
+
+      console.log(newArticles);
 
       const result = {
         keyWord,
         nextPage: pageNumber + 1,
         totalResults: response.totalResults,
-        articles: [...articles, ...response.articles],
+        articles: [...articles, ...newArticles],
       };
 
       setCurrentSearch(result);
@@ -162,10 +243,17 @@ function App() {
               onSearch={onSearchNew}
               onSearchMore={onSearchMore}
               currentSearch={currentSearch}
+              saveArticle={saveArticle}
+              removeArticle={removeArticle}
+              openLoginPopup={openSignInForm}
             ></Main>
           </Route>
           <Route path='/saved-news'>
-            <SavedNews onHeaderButtonClick={onHeaderButtonClick}></SavedNews>
+            <SavedNews
+              onHeaderButtonClick={onHeaderButtonClick}
+              savedArticles={savedArticles}
+              removeArticle={removeArticle}
+            ></SavedNews>
           </Route>
         </Switch>
         <PopupSignIn

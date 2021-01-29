@@ -6,17 +6,16 @@ import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 
 import NewsCardList from '../NewsCardList/NewsCardList';
 
-function Main(props) {
-  //
+function SavedNews({ savedArticles, removeArticle }) {
   return (
     <>
-      <SavedNewsHeader></SavedNewsHeader>
+      <SavedNewsHeader savedArticles={savedArticles}></SavedNewsHeader>
       <GraySection>
-        <NewsCardList isShown={true} />
+        <NewsCardList isShown={true} articles={savedArticles} removeArticle={removeArticle} />
       </GraySection>
       <Footer />
     </>
   );
 }
 
-export default Main;
+export default SavedNews;

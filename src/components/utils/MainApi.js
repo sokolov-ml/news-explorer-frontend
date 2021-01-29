@@ -5,6 +5,7 @@ class MainApi {
     this._path = {
       default: '/',
       user: '/users/me',
+      articles: '/articles',
       signup: '/signup',
       signin: '/signin',
     };
@@ -46,6 +47,22 @@ class MainApi {
 
   checkCurrentToken() {
     return this._fetch(this._path.user);
+  }
+
+  getArticles() {
+    return this._fetch(this._path.articles);
+  }
+
+  saveArticle(article) {
+    return this._fetch(this._path.articles, 'POST', article).then((data) => {
+      return data;
+    });
+  }
+
+  removeArticle(articleId) {
+    return this._fetch(`${this._path.articles}/${articleId}`, 'DELETE').then((data) => {
+      return data;
+    });
   }
 }
 
