@@ -218,7 +218,7 @@ function App() {
     return newsApi
       .search(keyWord, pageNumber)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
 
         const newArticles = response.articles.map((a) => {
           return {
