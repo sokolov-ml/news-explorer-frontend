@@ -39,7 +39,7 @@ function SavedNewsHeader({ onHeaderButtonClick, savedArticles }) {
       }
     }
     return result;
-    console.log(sortable);
+    // console.log(sortable);
   }
 
   return (

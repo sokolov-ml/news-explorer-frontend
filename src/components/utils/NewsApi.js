@@ -14,7 +14,7 @@ class NewsApi {
     }).toString();
 
     const url = `${this._url}${path}?${searchParams.toString()}`;
-    console.log(url);
+    // console.log(url);
     return fetch(url, {
       headers: {
         'Content-Type': 'application/json',

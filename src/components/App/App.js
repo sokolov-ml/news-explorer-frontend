@@ -65,24 +65,24 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    console.log(currentSearch);
+    // console.log(currentSearch);
     localStorage.setItem('currentSearch', JSON.stringify(currentSearch));
     setIsSearchResultsShown(true);
   }, [currentSearch]);
 
   React.useEffect(() => {
-    console.log(savedArticles);
+    // console.log(savedArticles);
     localStorage.setItem('savedArticles', JSON.stringify(savedArticles));
   }, [savedArticles]);
 
   function checkLocalToken() {
-    console.log(localStorage.token);
+    // console.log(localStorage.token);
     mainApi
       .checkCurrentToken()
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data) {
-          console.log(data);
+          // console.log(data);
           setCurrentUser({ loggedOn: true, user: data });
           return data;
         }
@@ -135,7 +135,7 @@ function App() {
   }
 
   const onHeaderButtonClick = () => {
-    console.log('click');
+    // console.log('click');
     if (currentUser.loggedOn) {
       handleLogoff();
     } else {
@@ -176,7 +176,7 @@ function App() {
           return { ...article, isSaved: true, _id: response._id };
         });
 
-        console.log(newArticles);
+        // console.log(newArticles);
         setCurrentSearch({ ...currentSearch, articles: newArticles });
         setSavedArticles([
           ...savedArticles,
@@ -193,7 +193,7 @@ function App() {
     mainApi
       .removeArticle(articleId)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         //удалить из стейта массива сохранённых
         setSavedArticles(savedArticles.filter((a) => a.link !== response.link));
 
@@ -218,7 +218,7 @@ function App() {
     return newsApi
       .search(keyWord, pageNumber)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
 
         const newArticles = response.articles.map((a) => {
           return {
@@ -233,7 +233,7 @@ function App() {
           };
         });
 
-        console.log(newArticles);
+        // console.log(newArticles);
 
         const result = {
           keyWord,
