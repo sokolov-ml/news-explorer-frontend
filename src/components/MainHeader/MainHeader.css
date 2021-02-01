@@ -79,6 +79,10 @@
   color: #b6bcbf;
 }
 
+.main-header__input:focus {
+  outline: none;
+}
+
 .main-header__button {
   --buttonWidth: 168px;
 
