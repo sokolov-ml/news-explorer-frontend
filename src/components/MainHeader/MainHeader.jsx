@@ -4,9 +4,19 @@ import Header from '../Header/Header';
 import './MainHeader.css';
 
 function MainHeader({ onHeaderButtonClick, onSearch }) {
+  const [inputValue, setInputValue] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch();
+    setIsLoading(true);
+    onSearch(inputValue).finally(() => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -18,14 +28,21 @@ function MainHeader({ onHeaderButtonClick, onSearch }) {
           Находите самые свежие статьи на любую тему и сохраняйте в своём личном кабинете
         </p>
         <form className='main-header__form' onSubmit={handleSubmit}>
+          {/* <fieldset className='main-header__fieldset' disabled={isLoading}> */}
           <input
             className='main-header__input'
             type='text'
-            defaultValue='Природа'
+            value={inputValue}
             placeholder='Введите тему новости'
+            onChange={handleInputChange}
             required
+            autoFocus
+            disabled={isLoading}
           />
-          <button className='main-header__button'>Искать</button>
+          <button className='main-header__button' disabled={isLoading}>
+            {isLoading ? 'Идёт поиск...' : 'Искать'}
+          </button>
+          {/* </fieldset> */}
         </form>
       </div>
     </div>

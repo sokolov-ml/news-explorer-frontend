@@ -15,7 +15,7 @@ export default function PopupSignOn(props) {
   });
 
   const handleInputChange = (e) => {
-    console.log(inputValues);
+    // console.log(inputValues);
     setInputValues({
       ...inputValues,
       [e.target.name]: {
@@ -32,11 +32,20 @@ export default function PopupSignOn(props) {
           return false;
         }),
     });
-    console.log(inputValues);
+    // console.log(inputValues);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSubmit();
+    setIsLoading(true);
+    props
+      .onSubmit({
+        name: inputValues.name.value,
+        email: inputValues.email.value,
+        password: inputValues.password.value,
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   return (
     <PopupWithForm {...props} title='Вход' onSubmit={handleSubmit}>
