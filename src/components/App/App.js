@@ -114,6 +114,13 @@ function App() {
   function handleLogoff() {
     localStorage.removeItem('token');
     setCurrentUser({ loggedOn: false, user: {} });
+    setSavedArticles([]);
+
+    const currentArticles = currentSearch.articles.map((a) => {
+      return { ...a, isSaved: false };
+    });
+    setCurrentSearch({ ...currentSearch, articles: currentArticles });
+
     history.push('/');
   }
 
